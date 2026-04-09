@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block title %}Admin Login | Royal Restaurant{% endblock %} {% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5">
+        <div
+          class="card border-0 shadow-lg rounded-4 admin-login-card overflow-hidden"
+        >
+          <div class="card-body p-4 p-lg-5">
+            <span class="eyebrow text-warning">Admin Access</span>
+            <h1 class="fw-bold mt-3 mb-2">Sign in to manage orders</h1>
+            <p class="text-secondary mb-4">
+              Monitor menu items, track orders, and update kitchen progress.
+            </p>
+            <form method="post" class="row g-4">
+              <div class="col-12">
+                <label class="form-label" for="username">Username</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text"
+                    ><i class="bi bi-person-badge"></i
+                  ></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text"
+                    ><i class="bi bi-shield-lock"></i
+                  ></span>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <button
+                  class="btn btn-warning btn-lg rounded-pill w-100"
+                  type="submit"
+                >
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

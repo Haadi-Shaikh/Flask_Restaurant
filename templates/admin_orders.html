@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Orders | Royal Restaurant{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <span class="eyebrow text-warning">Orders</span>
+                <h1 class="fw-bold mb-2">Track customer orders</h1>
+                <p class="text-secondary mb-0">Review item details and update statuses as food gets served.</p>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-light rounded-pill">
+                <i class="bi bi-speedometer2 me-2"></i>Back to Dashboard
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table align-middle admin-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Table</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.customer_name }}</td>
+                                    <td>{{ order.table_number }}</td>
+                                    <td>
+                                        <div class="item-stack">
+                                            {% for item in order.parsed_items %}
+                                                <span>{{ item.name }} × {{ item.quantity }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td>{{ order.total_price|inr }}</td>
+                                    <td>
+                                        <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="post">
+                                            <select class="form-select status-select" name="status" onchange="this.form.submit()">
+                                                <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                <option value="Completed" {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-secondary py-4">No orders have been placed yet.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

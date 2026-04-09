@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | Royal Restaurant{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <span class="eyebrow text-warning">Dashboard</span>
+                <h1 class="fw-bold mb-2">Restaurant overview</h1>
+                <p class="text-secondary mb-0">Track order flow and keep the menu up to date.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('admin_menu') }}" class="btn btn-outline-light rounded-pill">
+                    <i class="bi bi-journal-richtext me-2"></i>Manage Menu
+                </a>
+                <a href="{{ url_for('admin_orders') }}" class="btn btn-warning rounded-pill">
+                    <i class="bi bi-receipt-cutoff me-2"></i>View Orders
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="icon-wrap bg-primary-subtle text-primary"><i class="bi bi-bar-chart-line"></i></div>
+                    <p class="text-secondary mb-1">Total Orders</p>
+                    <h2 class="fw-bold mb-0">{{ total_orders }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="icon-wrap bg-warning-subtle text-warning"><i class="bi bi-hourglass-split"></i></div>
+                    <p class="text-secondary mb-1">Pending Orders</p>
+                    <h2 class="fw-bold mb-0">{{ pending_orders }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="icon-wrap bg-success-subtle text-success"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+                    <p class="text-secondary mb-1">Menu Items</p>
+                    <h2 class="fw-bold mb-0">{{ total_menu_items }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="h4 mb-0">Recent Orders</h2>
+                    <a href="{{ url_for('admin_orders') }}" class="btn btn-sm btn-outline-light rounded-pill">See all</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle admin-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Customer</th>
+                                <th>Table</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in recent_orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.customer_name }}</td>
+                                    <td>{{ order.table_number }}</td>
+                                    <td>{{ order.total_price|inr }}</td>
+                                    <td>
+                                        <span class="badge {% if order.status == 'Completed' %}text-bg-success{% else %}text-bg-warning{% endif %}">
+                                            {{ order.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-secondary py-4">No orders yet.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

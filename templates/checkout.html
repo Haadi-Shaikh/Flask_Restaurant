@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Checkout | Royal Restaurant{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="section-heading mb-4">
+                    <span class="eyebrow text-warning">Checkout</span>
+                    <h1 class="fw-bold">Complete your order</h1>
+                    <p class="text-secondary mb-0">Enter your details so the kitchen can deliver to the right table.</p>
+                </div>
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <form method="post" class="row g-4">
+                            <div class="col-12">
+                                <label for="customer_name" class="form-label">Customer Name</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter your name" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="table_number" class="form-label">Table Number</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text"><i class="bi bi-grid-1x2"></i></span>
+                                    <input type="text" class="form-control" id="table_number" name="table_number" placeholder="e.g. 12" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-warning btn-lg rounded-pill w-100" type="submit">
+                                    <i class="bi bi-check2-circle me-2"></i>Place Order
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm rounded-4 order-summary-card h-100">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="h4 mb-4">Order Summary</h2>
+                        {% for item in cart_items %}
+                            <div class="d-flex justify-content-between align-items-center {% if not loop.last %}mb-3{% endif %}">
+                                <div>
+                                    <p class="mb-1 fw-semibold">{{ item.name }}</p>
+                                    <small class="text-secondary">Qty {{ item.quantity }}</small>
+                                </div>
+                                <strong>{{ (item.price * item.quantity)|inr }}</strong>
+                            </div>
+                        {% endfor %}
+                        <hr class="border-secondary-subtle my-4">
+                        <div class="d-flex justify-content-between align-items-center h4 mb-0">
+                            <span>Total</span>
+                            <span>{{ cart_summary.total|inr }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

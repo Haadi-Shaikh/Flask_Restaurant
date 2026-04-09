@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Cart | Royal Restaurant{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <span class="eyebrow text-warning">Your Cart</span>
+            <h1 class="fw-bold">Review your order</h1>
+            <p class="text-secondary mb-0">Adjust quantities before heading to checkout.</p>
+        </div>
+
+        {% if cart_items %}
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            {% for item in cart_items %}
+                                <div class="cart-item d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 {% if not loop.last %}border-bottom pb-4 mb-4{% endif %}">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="{{ item.image_url or 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80' }}" class="cart-thumb" alt="{{ item.name }}">
+                                        <div>
+                                            <h2 class="h5 mb-1">{{ item.name }}</h2>
+                                            <p class="text-secondary mb-0">{{ item.price|inr }} each</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <form action="{{ url_for('update_cart', item_id=item.id) }}" method="post">
+                                            <input type="hidden" name="action" value="decrease">
+                                            <button class="btn btn-outline-light btn-square" type="submit"><i class="bi bi-dash-lg"></i></button>
+                                        </form>
+                                        <span class="quantity-badge">{{ item.quantity }}</span>
+                                        <form action="{{ url_for('update_cart', item_id=item.id) }}" method="post">
+                                            <input type="hidden" name="action" value="increase">
+                                            <button class="btn btn-outline-light btn-square" type="submit"><i class="bi bi-plus-lg"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <strong class="h5 mb-0">{{ (item.price * item.quantity)|inr }}</strong>
+                                        <form action="{{ url_for('remove_from_cart', item_id=item.id) }}" method="post">
+                                            <button class="btn btn-outline-danger rounded-pill" type="submit">
+                                                <i class="bi bi-trash3 me-1"></i>Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-4 order-summary-card">
+                        <div class="card-body p-4">
+                            <h3 class="h4 mb-4">Summary</h3>
+                            <div class="d-flex justify-content-between text-secondary mb-2">
+                                <span>Items</span>
+                                <span>{{ cart_summary.count }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-secondary mb-3">
+                                <span>Service</span>
+                                <span>Included</span>
+                            </div>
+                            <hr class="border-secondary-subtle">
+                            <div class="d-flex justify-content-between align-items-center h4 mb-4">
+                                <span>Total</span>
+                                <span>{{ cart_summary.total|inr }}</span>
+                            </div>
+                            <a href="{{ url_for('checkout') }}" class="btn btn-warning w-100 btn-lg rounded-pill">
+                                <i class="bi bi-credit-card-2-front me-2"></i>Proceed to Checkout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state text-center py-5">
+                <i class="bi bi-bag-x fs-1 text-warning"></i>
+                <h3 class="h4 mt-3">Your cart is empty</h3>
+                <p class="text-secondary">Add dishes from the menu to start an order.</p>
+                <a href="{{ url_for('home') }}" class="btn btn-warning rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Menu
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

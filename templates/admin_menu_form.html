@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Menu Item | Royal Restaurant{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-9">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <span class="eyebrow text-warning">Admin</span>
+                        <h1 class="fw-bold mt-3 mb-2">{{ action }} menu item</h1>
+                        <p class="text-secondary mb-4">Use a descriptive title, clear price, and either upload a photo or provide an image URL.</p>
+                        <form method="post" enctype="multipart/form-data" class="row g-4">
+                            <div class="col-12">
+                                <label class="form-label" for="name">Dish Name</label>
+                                <input class="form-control form-control-lg" type="text" id="name" name="name" value="{{ menu_item.name }}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="price">Price</label>
+                                <input class="form-control form-control-lg" type="number" id="price" name="price" value="{{ menu_item.price }}" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label" for="image_url">Image URL</label>
+                                <input class="form-control form-control-lg" type="url" id="image_url" name="image_url" value="{{ menu_item.image_url or '' }}" placeholder="https://example.com/dish.jpg">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="image_file">Upload Image</label>
+                                <input class="form-control form-control-lg" type="file" id="image_file" name="image_file" accept=".png,.jpg,.jpeg,.webp,.gif">
+                                <div class="form-text text-secondary">Uploaded file takes priority over the URL field. Max size: 4 MB.</div>
+                            </div>
+                            {% if menu_item.image_url %}
+                                <div class="col-12">
+                                    <div class="preview-card">
+                                        <img src="{{ menu_item.image_url }}" alt="{{ menu_item.name }}" class="admin-preview-image">
+                                        <div>
+                                            <p class="fw-semibold mb-1">Current preview</p>
+                                            <small class="text-secondary">{{ menu_item.image_url }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="col-12 d-flex flex-wrap gap-3">
+                                <button class="btn btn-warning rounded-pill px-4" type="submit">
+                                    <i class="bi bi-check2-circle me-2"></i>{{ action }} Item
+                                </button>
+                                <a href="{{ url_for('admin_menu') }}" class="btn btn-outline-light rounded-pill px-4">
+                                    <i class="bi bi-arrow-left me-2"></i>Back
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
